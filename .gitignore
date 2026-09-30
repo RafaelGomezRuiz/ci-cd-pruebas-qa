@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+
+# Reportes de pruebas y cobertura
+coverage/
+reports/
+
+# Logs
+npm-debug.log*
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+.vscode/

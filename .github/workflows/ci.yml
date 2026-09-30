@@ -1,0 +1,30 @@
+name: CI - Pruebas automatizadas
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Etapa 1: Clonación del repositorio
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      # Preparar el entorno
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # Etapa 2: Ejecución de pruebas automatizadas
+      - name: Ejecutar pruebas unitarias
+        run: npm test
