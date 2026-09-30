@@ -6,16 +6,18 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  checks: write   # necesario para publicar el reporte de pruebas
+
 jobs:
   pruebas:
     runs-on: ubuntu-latest
-
     steps:
       # Etapa 1: Clonación del repositorio
       - name: Clonar repositorio
         uses: actions/checkout@v4
 
-      # Preparar el entorno
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
@@ -28,3 +30,45 @@ jobs:
       # Etapa 2: Ejecución de pruebas automatizadas
       - name: Ejecutar pruebas unitarias
         run: npm test
+
+      # Etapa 3: Generación de reportes
+      - name: Publicar reporte de pruebas
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Resultados de pruebas (Jest)
+          path: reports/junit.xml
+          reporter: jest-junit
+
+      - name: Guardar reportes como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-pruebas
+          path: |
+            reports/
+            coverage/
+
+  # Etapa 4: Envío de notificaciones
+  notificar:
+    needs: pruebas
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificación por correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: GitHub Actions CI <${{ secrets.MAIL_USERNAME }}>
+          to: ${{ secrets.MAIL_USERNAME }}
+          subject: "[CI] ${{ github.repository }} - Pruebas: ${{ needs.pruebas.result }}"
+          body: |
+            Resultado de las pruebas: ${{ needs.pruebas.result }}
+            Rama: ${{ github.ref_name }}
+            Autor: ${{ github.actor }}
+            Commit: ${{ github.sha }}
+            Ver ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

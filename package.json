@@ -4,7 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "reports",
+          "outputName": "junit.xml"
+        }
+      ]
+    ]
   },
   "repository": {
     "type": "git",
@@ -18,6 +30,7 @@
   },
   "homepage": "https://github.com/RafaelGomezRuiz/ci-cd-pruebas-qa#readme",
   "devDependencies": {
-    "jest": "^30.5.2"
+    "jest": "^30.5.2",
+    "jest-junit": "^17.0.0"
   }
 }
