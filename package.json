@@ -1,0 +1,23 @@
+{
+  "name": "ci-cd-pruebas-qa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RafaelGomezRuiz/ci-cd-pruebas-qa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RafaelGomezRuiz/ci-cd-pruebas-qa/issues"
+  },
+  "homepage": "https://github.com/RafaelGomezRuiz/ci-cd-pruebas-qa#readme",
+  "devDependencies": {
+    "jest": "^30.5.2"
+  }
+}
