@@ -1,7 +1,7 @@
 const { sumar, dividir } = require("../src/calculadora");
 
 test("suma dos números", () => {
-  expect(sumar(2, 3)).toBe(6);
+  expect(sumar(2, 3)).toBe(5);
 });
 
 test("divide correctamente", () => {
